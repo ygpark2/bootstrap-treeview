@@ -35,7 +35,7 @@
 
 		expandIcon: 'fa fa-plus',
 		collapseIcon: 'fa fa-minus',
-		emptyIcon: 'glyphicon',
+		emptyIcon: 'fa',
 		nodeIcon: '',
 		selectedIcon: '',
 		checkedIcon: 'fa fa-check',
@@ -291,7 +291,7 @@
 			if (!node.state.hasOwnProperty('expanded')) {
 				if (!node.state.disabled &&
 						(level < _this.options.levels) &&
-						(node.nodes && node.nodes.length > 0)) {
+						(node.nodes)) {
 					node.state.expanded = true;
 				}
 				else {
@@ -321,7 +321,7 @@
 		var target = $(event.target);
 		var node = this.findNode(target);
 		if (!node || node.state.disabled) return;
-		
+
 		var classList = target.attr('class') ? target.attr('class').split(' ') : [];
 		if ((classList.indexOf('expand-icon') !== -1)) {
 
@@ -329,12 +329,12 @@
 			this.render();
 		}
 		else if ((classList.indexOf('check-icon') !== -1)) {
-			
+
 			this.toggleCheckedState(node, _default.options);
 			this.render();
 		}
 		else {
-			
+
 			if (node.selectable) {
 				this.toggleSelectedState(node, _default.options);
 			} else {
@@ -516,7 +516,7 @@
 				.addClass(node.state.checked ? 'node-checked' : '')
 				.addClass(node.state.disabled ? 'node-disabled': '')
 				.addClass(node.state.selected ? 'node-selected' : '')
-				.addClass(node.searchResult ? 'search-result' : '') 
+				.addClass(node.searchResult ? 'search-result' : '')
 				.attr('data-nodeid', node.nodeId)
 				.attr('style', _this.buildStyleOverride(node));
 
@@ -527,7 +527,7 @@
 
 			// Add expand, collapse or empty spacer icons
 			var classList = [];
-			if (node.nodes) {
+			if (node.nodes && node.nodes.length > 0) {
 				classList.push('expand-icon');
 				if (node.state.expanded) {
 					classList.push(_this.options.collapseIcon);
@@ -548,13 +548,13 @@
 
 			// Add node icon
 			if (_this.options.showIcon) {
-				
+
 				var classList = ['node-icon'];
 
 				classList.push(node.icon || _this.options.nodeIcon);
 				if (node.state.selected) {
 					classList.pop();
-					classList.push(node.selectedIcon || _this.options.selectedIcon || 
+					classList.push(node.selectedIcon || _this.options.selectedIcon ||
 									node.icon || _this.options.nodeIcon);
 				}
 
@@ -569,7 +569,7 @@
 
 				var classList = ['check-icon'];
 				if (node.state.checked) {
-					classList.push(_this.options.checkedIcon); 
+					classList.push(_this.options.checkedIcon);
 				}
 				else {
 					classList.push(_this.options.uncheckedIcon);
@@ -692,7 +692,7 @@
 		indent: '<span class="indent"></span>',
 		icon: '<i class="icon"></i>',
 		link: '<a href="#" style="color:inherit;"></a>',
-		badge: '<span class="badge"></span>'
+		badge: '<span class="badge badge-primary float-right"></span>'
 	};
 
 	Tree.prototype.css = '.treeview .list-group-item{cursor:pointer}.treeview span.indent{margin-left:10px;margin-right:10px}.treeview i.icon{width:12px;margin-right:5px}.treeview .node-disabled{color:silver;cursor:not-allowed}'
@@ -935,7 +935,7 @@
 		this.forEachIdentifier(identifiers, options, $.proxy(function (node, options) {
 			this.toggleExpandedState(node, options);
 		}, this));
-		
+
 		this.render();
 	};
 
@@ -1085,7 +1085,7 @@
 
 		$.each(identifiers, $.proxy(function (index, identifier) {
 			callback(this.identifyNode(identifier), options);
-		}, this));	
+		}, this));
 	};
 
 	/*
@@ -1156,9 +1156,9 @@
 		});
 
 		if (options.render) {
-			this.render();	
+			this.render();
 		}
-		
+
 		this.$element.trigger('searchCleared', $.extend(true, {}, results));
 	};
 
