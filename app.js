@@ -6,24 +6,42 @@
 var express = require('express');
 var http = require('http');
 var path = require('path');
+var favicon = require('serve-favicon');
+var morgan = require('morgan');
+var methodOverride = require('method-override')
+var errorhandler = require('errorhandler')
+var serveStatic = require('serve-static');
 
 var app = express();
 
 // all environments
 app.set('port', process.env.PORT || 3000);
-app.use(express.favicon());
-app.use(express.logger('dev'));
+// app.use(favicon(path.join(__dirname, '/public', 'favicon.ico')));
+app.use(morgan('combined'));
 app.use(express.json());
 app.use(express.urlencoded());
-app.use(express.methodOverride());
-app.use(express.static(path.join(__dirname, '/public')));
-app.use(express.static(path.join(__dirname, '/tests')));
+app.use(methodOverride());
+app.use(serveStatic(path.join(__dirname, '/public'), {
+  maxAge: '0',
+  setHeaders: setCustomCacheControl
+}));
+app.use(serveStatic(path.join(__dirname, '/tests'), {
+  maxAge: '0',
+  setHeaders: setCustomCacheControl
+}));
 
 // development only
 if ('development' == app.get('env')) {
-  app.use(express.errorHandler());
+  app.use(errorhandler());
 }
 
-http.createServer(app).listen(app.get('port'), function(){
+app.listen(app.get('port'), function() {
   console.log('Express server listening on port ' + app.get('port'));
 });
+
+function setCustomCacheControl (res, path) {
+  if (serveStatic.mime.lookup(path) === 'text/html') {
+    // Custom Cache-Control for HTML files
+    res.setHeader('Cache-Control', 'public, max-age=0')
+  }
+}

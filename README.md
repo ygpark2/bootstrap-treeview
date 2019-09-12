@@ -14,8 +14,9 @@ A simple and elegant solution to displaying hierarchical tree structures (i.e. a
 
 Where provided these are the actual versions bootstrap-treeview has been tested against.  
 
-- [Bootstrap v3.3.4 (>= 3.0.0)](http://getbootstrap.com/)
-- [jQuery v2.1.3 (>= 1.9.0)](http://jquery.com/)
+- [Bootstrap v4.3.1 (>= 4.0.0)](http://getbootstrap.com/)
+- [jQuery v3.3.1 (>= 3.0.0)](http://jquery.com/)
+- [Font Awesome v5.10.2 (>= 5.0.0)](https://fontawesome.com/)
 
 
 ## Getting Started
